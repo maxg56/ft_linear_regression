@@ -1,6 +1,6 @@
 import pandas as pd
 
-def loode_csv(file_path: str) -> pd.DataFrame:
+def load_csv(file_path: str) -> pd.DataFrame:
     """
     Load a CSV file into a pandas DataFrame.
 
@@ -15,4 +15,4 @@ def loode_csv(file_path: str) -> pd.DataFrame:
         return df
     except Exception as e:
         print(f"Error loading CSV file: {e}")
-        return pd.DataFrame()  # Return an empty DataFrame on error
+        return pd.DataFrame() 
