@@ -11,16 +11,11 @@ def estimate_price(km: float) -> float:
     if km < 0:
         raise ValueError("Kilometers cannot be negative.")
     
-    # Normalize the input using the same statistics from training
     km_normalized = (km - MEAN_KM) / STD_KM
-    
-    # Apply the linear regression model
+
     price_normalized = THETA0 + (THETA1 * km_normalized)
     
-    # Denormalize the result
-    price = price_normalized * STD_PRICE + MEAN_PRICE
-    
-    return price
+    return  price_normalized * STD_PRICE + MEAN_PRICE
 
 
 
@@ -30,8 +25,9 @@ def main():
         return
     
     km = sys.argv[1]
-    
     try:
+        if not km.replace('.', '', 1).isdigit():
+            raise ValueError("Invalid input: Please enter a numeric value for kilometers.")
         km = float(km)
         price = estimate_price(km)
         print(f"Estimated price for {km} km: {price:.2f}")

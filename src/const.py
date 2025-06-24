@@ -7,3 +7,5 @@ MEAN_KM = 101066.25      # Mean of mileage data
 STD_KM = 51565.1899106445        # Standard deviation of mileage data  
 MEAN_PRICE = 6331.833333333333   # Mean of price data
 STD_PRICE = 1291.8688873961714     # Standard deviation of price data
+
+DATA_FILE = "../data/data.csv"  # Path to the data file
