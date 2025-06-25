@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from loode_csv import loode_csv
+from utils.load_csv import load_csv
 from linear_regression import Gradient_descent, estimate_price
 
 def plot_regression():
@@ -8,7 +8,7 @@ def plot_regression():
     Visualize the linear regression results with scatter plot and regression line.
     """
     # Load data from CSV file
-    data = loode_csv("../data/data.csv")
+    data = load_csv("../data/data.csv")
     
     if data is None or len(data) == 0:
         print("Error: Could not load data from CSV file")
@@ -84,7 +84,7 @@ def plot_cost_function():
     Visualize the cost function evolution during gradient descent.
     """
     # Load data
-    data = loode_csv("../data/data.csv")
+    data = load_csv("../data/data.csv")
     
     if data is None or len(data) == 0:
         print("Error: Could not load data from CSV file")
@@ -134,7 +134,7 @@ def plot_residuals():
     Plot residuals to analyze model performance.
     """
     # Load and prepare data
-    data = loode_csv("../data/data.csv")
+    data = load_csv("../data/data.csv")
     
     if data is None or len(data) == 0:
         print("Error: Could not load data from CSV file")
@@ -187,7 +187,7 @@ def plot_comparison():
     """
     Compare original data with normalized data and predictions.
     """
-    data = loode_csv("../data/data.csv")
+    data = load_csv("../data/data.csv")
     
     if data is None or len(data) == 0:
         print("Error: Could not load data from CSV file")

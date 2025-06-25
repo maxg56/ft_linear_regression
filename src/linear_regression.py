@@ -1,5 +1,5 @@
 import numpy as np
-from loode_csv import loode_csv
+from utils.load_csv import load_csv
 from const import DATA_FILE
 from utils.update_constants import update_constants
 
@@ -37,7 +37,7 @@ def estimate_price(X, theta):
 
 def main():
     # Load data from CSV file
-    data = loode_csv(DATA_FILE)
+    data = load_csv(DATA_FILE)
 
     if data is not None and len(data) > 0:
         mileage = data['km'].values

@@ -27,14 +27,31 @@ ft_linear_regression/
 
 - **Linear regression from scratch** using gradient descent
 - **Data normalization** for better convergence
-- **Comprehensive visualizations** including:
+- **Complete data visualization** including:
+  - Data distribution and repartition plots
   - Scatter plot with regression line
   - Cost function evolution during training
   - Residual analysis
   - Comparison of original vs normalized data
-- **Model evaluation** with metrics (MSE, RMSE, MAE, R²)
+- **Comprehensive precision calculation** with metrics (MSE, RMSE, MAE, R², MAPE)
 - **Interactive testing** mode
 - **Command-line price estimation**
+- **Complete demonstration** combining all features
+
+## Quick Start
+
+### Complete Demonstration
+Run the complete demonstration to see all features:
+
+```bash
+cd /path/to/ft_linear_regression
+make demo
+```
+
+This will:
+1. **Plot data distribution** - Shows how the data points are spread
+2. **Plot regression line** - Shows the result of your linear regression
+3. **Calculate precision** - Comprehensive algorithm accuracy analysis
 
 ## Usage
 
@@ -83,7 +100,51 @@ This will:
 - Show average prediction error
 - Offer interactive testing mode
 
-### 4. Generate Visualizations
+### 4. Plot Data Distribution and Regression Line
+
+Show data repartition and the linear regression result:
+
+```bash
+cd src
+python plot_data.py
+```
+
+This generates:
+- `data_distribution.png`: Data distribution analysis with histograms
+- `regression_result.png`: Data points with the linear regression line
+
+### 5. Calculate Algorithm Precision
+
+Calculate comprehensive precision metrics:
+
+```bash
+cd src
+python precision.py
+```
+
+This provides:
+- Mean Absolute Error (MAE)
+- Root Mean Squared Error (RMSE) 
+- Mean Absolute Percentage Error (MAPE)
+- R-squared coefficient
+- Precision by error thresholds
+- Detailed error analysis
+
+### 6. Complete Demonstration
+
+Run the complete pipeline demonstrating all requirements:
+
+```bash
+cd src
+python demo.py
+```
+
+This combines:
+1. **Data repartition plotting**
+2. **Linear regression line visualization** 
+3. **Algorithm precision calculation**
+
+### 7. Generate All Visualizations
 
 Create all visualization plots:
 
@@ -98,7 +159,7 @@ This generates:
 - `residuals_analysis.png`: Residual analysis plots
 - `comparison_plot.png`: Original vs normalized data comparison
 
-### 5. Run Core Functions
+### 8. Run Core Functions
 
 You can also run the core linear regression implementation directly:
 
@@ -106,6 +167,67 @@ You can also run the core linear regression implementation directly:
 cd src
 python linear_regression.py
 ```
+
+## Makefile Commands
+
+For easier project management, use the Makefile:
+
+```bash
+# Complete demonstration (recommended)
+make demo
+
+# Individual components
+make train          # Train the model
+make plot           # Plot data distribution and regression line
+make precision      # Calculate algorithm precision
+make visualize      # Generate all visualization plots
+make test           # Test the model
+make estimate KM=50000  # Estimate price for specific mileage
+
+# Project management
+make install        # Install dependencies
+make clean          # Clean generated files
+make all            # Train + plot + precision + visualize
+make help           # Show all available commands
+```
+
+## Project Requirements Fulfilled
+
+This project fulfills all the specified requirements:
+
+### ✅ 1. Plotting the data into a graph to see their repartition
+- **File**: `src/plot_data.py` and `src/demo.py`
+- **Command**: `make plot` or `make demo`
+- **Output**: Data distribution plots showing:
+  - Scatter plot with color-coded prices
+  - Mileage histogram with mean indicator
+  - Price histogram with mean indicator  
+  - Box plots for outlier detection
+- **Graphs**: `data_distribution.png`, `complete_demonstration.png`
+
+### ✅ 2. Plotting the line resulting from linear regression
+- **File**: `src/plot_data.py` and `src/demo.py` 
+- **Command**: `make plot` or `make demo`
+- **Output**: Regression visualization showing:
+  - Original data points (blue)
+  - Linear regression line (red)
+  - Individual predictions (orange)
+  - Model equation and parameters
+  - Correlation coefficient
+- **Graphs**: `regression_result.png`, `complete_demonstration.png`
+
+### ✅ 3. A program that calculates the precision of your algorithm
+- **File**: `src/precision.py` and `src/demo.py`
+- **Command**: `make precision` or `make demo`
+- **Output**: Comprehensive precision metrics:
+  - Mean Absolute Error (MAE): 558€
+  - Root Mean Squared Error (RMSE): 668€
+  - Mean Absolute Percentage Error (MAPE): 9.6%
+  - R-squared coefficient: 0.733 (73.3%)
+  - Precision by thresholds (±500€, ±1000€, ±1500€)
+  - Best/worst predictions analysis
+  - Quality assessment
+- **Graphs**: `precision_analysis.png`, `precision_summary.png`
 
 ## Model Details
 
@@ -169,6 +291,9 @@ pip install numpy pandas matplotlib
 ## Files Description
 
 ### Core Files
+- **`demo.py`**: Complete demonstration script (all requirements in one)
+- **`plot_data.py`**: Data distribution and regression line visualization
+- **`precision.py`**: Algorithm precision calculation and analysis
 - **`train.py`**: Main training script with comprehensive metrics
 - **`estimatePrice.py`**: Command-line price estimation tool
 - **`linear_regression.py`**: Core gradient descent implementation
@@ -181,9 +306,29 @@ pip install numpy pandas matplotlib
 
 ### Data Files
 - **`data/data.csv`**: Training dataset (24 data points)
-- **`graphs/*.png`**: Generated visualization plots
+- **`graphs/*.png`**: Generated visualization plots:
+  - `complete_demonstration.png`: Main demo output
+  - `data_distribution.png`: Data repartition analysis
+  - `regression_result.png`: Regression line visualization
+  - `precision_summary.png`: Precision metrics summary
+  - `precision_analysis.png`: Detailed precision analysis
+  - Plus additional visualization plots
 
 ## Example Output
+
+### Complete Demonstration
+```bash
+$ make demo
+🚀 DÉMONSTRATION COMPLÈTE DU PROJET ft_linear_regression
+📊 Données chargées: 24 points
+✅ 1. Répartition des données visualisée
+✅ 2. Ligne de régression linéaire tracée  
+✅ 3. Précision de l'algorithme calculée
+🏆 Qualité du modèle: 🟡 BONNE (R² = 0.733)
+🎯 Erreur moyenne: 558€ (9.6%)
+```
+
+### Training Output
 
 ```bash
 $ python train.py
