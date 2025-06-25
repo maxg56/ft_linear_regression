@@ -38,7 +38,7 @@ def load_and_prepare_data():
     mileage = data['km'].values
     actual_prices = data['price'].values
     
-    print(f"📊 Données chargées: {len(mileage)} points")
+    print(f" Données chargées: {len(mileage)} points")
     print(f"   Kilométrage: {np.min(mileage):.0f} - {np.max(mileage):.0f} km")
     print(f"   Prix: {np.min(actual_prices):.0f} - {np.max(actual_prices):.0f} €")
     
@@ -65,7 +65,7 @@ def plot_data_distribution(mileage, actual_prices):
     Returns:
         matplotlib.figure.Figure: The created figure
     """
-    print("\n📈 1. VISUALISATION DE LA RÉPARTITION DES DONNÉES")
+    print("\n 1. VISUALISATION DE LA RÉPARTITION DES DONNÉES")
     print("-" * 50)
     
     # Create comprehensive data visualization
@@ -78,7 +78,7 @@ def plot_data_distribution(mileage, actual_prices):
     plt.colorbar(scatter, label='Prix (€)')
     plt.xlabel('Kilométrage (km)', fontsize=11)
     plt.ylabel('Prix (€)', fontsize=11)
-    plt.title('🔍 Répartition des Données\nPrix vs Kilométrage', fontsize=12, fontweight='bold')
+    plt.title(' Répartition des Données\nPrix vs Kilométrage', fontsize=12, fontweight='bold')
     plt.grid(True, alpha=0.3)
     
     # Add data statistics
@@ -96,7 +96,7 @@ def plot_data_distribution(mileage, actual_prices):
                 label=f'Moyenne: {np.mean(mileage):.0f}')
     plt.xlabel('Kilométrage (km)', fontsize=11)
     plt.ylabel('Fréquence', fontsize=11)
-    plt.title('📊 Distribution du Kilométrage', fontsize=12, fontweight='bold')
+    plt.title(' Distribution du Kilométrage', fontsize=12, fontweight='bold')
     plt.legend()
     plt.grid(True, alpha=0.3)
     
@@ -107,7 +107,7 @@ def plot_data_distribution(mileage, actual_prices):
                 label=f'Moyenne: {np.mean(actual_prices):.0f}€')
     plt.xlabel('Prix (€)', fontsize=11)
     plt.ylabel('Fréquence', fontsize=11)
-    plt.title('💰 Distribution des Prix', fontsize=12, fontweight='bold')
+    plt.title(' Distribution des Prix', fontsize=12, fontweight='bold')
     plt.legend()
     plt.grid(True, alpha=0.3)
     
@@ -133,7 +133,7 @@ def add_regression_plot(fig, mileage, actual_prices, predictions):
     
     # Scatter plot of actual data
     plt.scatter(mileage, actual_prices, color='blue', alpha=0.7, s=70, 
-               label='🔵 Données réelles', edgecolors='darkblue', linewidth=0.5)
+               label=' Données réelles', edgecolors='darkblue', linewidth=0.5)
     
     # Create smooth regression line
     km_range = np.linspace(np.min(mileage) - 5000, np.max(mileage) + 5000, 200)
@@ -147,11 +147,11 @@ def add_regression_plot(fig, mileage, actual_prices, predictions):
     
     # Plot regression line
     plt.plot(km_range, smooth_predictions, color='red', linewidth=3, 
-             label='🔴 Ligne de régression', alpha=0.9)
+             label=' Ligne de régression', alpha=0.9)
     
     # Plot individual predictions
     plt.scatter(mileage, predictions, color='orange', alpha=0.8, s=50,
-               label='🟠 Prédictions', marker='x', linewidth=2)
+               label=' Prédictions', marker='x', linewidth=2)
     
     # Connect actual to predicted with lines
     for i in range(len(mileage)):
@@ -160,7 +160,7 @@ def add_regression_plot(fig, mileage, actual_prices, predictions):
     
     plt.xlabel('Kilométrage (km)', fontsize=12)
     plt.ylabel('Prix (€)', fontsize=12)
-    plt.title('🎯 Résultat de la Régression Linéaire\n' + 
+    plt.title(' Résultat de la Régression Linéaire\n' + 
               f'Équation: prix = f(km_normalisé) où f(x) = {THETA0:.6f} + {THETA1:.6f}×x',
               fontsize=13, fontweight='bold')
     plt.legend(fontsize=11, loc='upper right')
@@ -180,11 +180,11 @@ def add_regression_plot(fig, mileage, actual_prices, predictions):
              verticalalignment='top', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.9))
     
     plt.tight_layout()
+    # plt.show()
     plt.savefig('../graphs/complete_demonstration.png', dpi=300, bbox_inches='tight')
     plt.close()
     
     print("   ✅ Graphique de régression linéaire créé")
-    print("   📁 Sauvegardé: ../graphs/complete_demonstration.png")
 
 
 def calculate_precision_metrics(actual_prices, predictions, mileage):
@@ -263,7 +263,7 @@ def print_precision_results(metrics, mileage, actual_prices, predictions):
     print(f"   • Coefficient R²:                {metrics['r_squared']:.4f} ({metrics['r_squared']*100:.1f}%)")
     print(f"   • Corrélation:                   {metrics['correlation']:.4f}")
     
-    print(f"\n🎯 PRÉCISION PAR SEUILS:")
+    print(f"\n PRÉCISION PAR SEUILS:")
     print(f"   • Prédictions à ±500€:           {metrics['within_500']:.1f}% ({int(metrics['within_500']*len(metrics['errors'])/100)}/{len(metrics['errors'])})")
     print(f"   • Prédictions à ±1000€:          {metrics['within_1000']:.1f}% ({int(metrics['within_1000']*len(metrics['errors'])/100)}/{len(metrics['errors'])})")
     print(f"   • Prédictions à ±1500€:          {metrics['within_1500']:.1f}% ({int(metrics['within_1500']*len(metrics['errors'])/100)}/{len(metrics['errors'])})")
@@ -271,30 +271,30 @@ def print_precision_results(metrics, mileage, actual_prices, predictions):
     # Quality assessment
     print(f"\n📋 ÉVALUATION DE LA QUALITÉ:")
     if metrics['r_squared'] >= 0.8:
-        quality = "🟢 EXCELLENTE"
+        quality = " EXCELLENTE"
     elif metrics['r_squared'] >= 0.6:
-        quality = "🟡 BONNE"
+        quality = " BONNE"
     elif metrics['r_squared'] >= 0.4:
-        quality = "🟠 MODÉRÉE"
+        quality = " MODÉRÉE"
     else:
-        quality = "🔴 FAIBLE"
+        quality = " FAIBLE"
     
     print(f"   • Qualité globale du modèle:     {quality} (R² = {metrics['r_squared']:.3f})")
     
     if metrics['mape'] <= 10:
-        error_assessment = "🟢 EXCELLENTE"
+        error_assessment = " EXCELLENTE"
     elif metrics['mape'] <= 20:
-        error_assessment = "🟡 ACCEPTABLE"
+        error_assessment = " ACCEPTABLE"
     else:
-        error_assessment = "🔴 ÉLEVÉE"
+        error_assessment = " ÉLEVÉE"
     
     print(f"   • Erreur pourcentage moyenne:    {error_assessment} ({metrics['mape']:.1f}%)")
     
     # Best and worst predictions
-    print(f"\n🏆 MEILLEURE PRÉDICTION:")
+    print(f"\n MEILLEURE PRÉDICTION:")
     print(f"   Point #{metrics['best_idx']+1}: {mileage[metrics['best_idx']]:.0f}km → {actual_prices[metrics['best_idx']]:.0f}€ (prédit: {predictions[metrics['best_idx']]:.0f}€, erreur: {metrics['abs_errors'][metrics['best_idx']]:.0f}€)")
     
-    print(f"\n⚠️  PIRE PRÉDICTION:")
+    print(f"\n  PIRE PRÉDICTION:")
     print(f"   Point #{metrics['worst_idx']+1}: {mileage[metrics['worst_idx']]:.0f}km → {actual_prices[metrics['worst_idx']]:.0f}€ (prédit: {predictions[metrics['worst_idx']]:.0f}€, erreur: {metrics['abs_errors'][metrics['worst_idx']]:.0f}€)")
 
 
@@ -317,7 +317,7 @@ def create_precision_plots(metrics, actual_prices, predictions):
     ax1.plot([min_price, max_price], [min_price, max_price], 'r--', linewidth=2, label='Prédiction parfaite')
     ax1.set_xlabel('Prix Réel (€)')
     ax1.set_ylabel('Prix Prédit (€)')
-    ax1.set_title(f'🎯 Prédictions vs Réalité\nR² = {metrics["r_squared"]:.4f}')
+    ax1.set_title(f' Prédictions vs Réalité\nR² = {metrics["r_squared"]:.4f}')
     ax1.legend()
     ax1.grid(True, alpha=0.3)
     
@@ -328,7 +328,7 @@ def create_precision_plots(metrics, actual_prices, predictions):
                 label=f'Erreur moyenne: {np.mean(metrics["errors"]):.0f}€')
     ax2.set_xlabel('Erreur (€)')
     ax2.set_ylabel('Fréquence')
-    ax2.set_title(f'📊 Distribution des Erreurs\nMAE = {metrics["mae"]:.0f}€')
+    ax2.set_title(f' Distribution des Erreurs\nMAE = {metrics["mae"]:.0f}€')
     ax2.legend()
     ax2.grid(True, alpha=0.3)
     
@@ -337,7 +337,7 @@ def create_precision_plots(metrics, actual_prices, predictions):
     ax3.axhline(metrics['mae'], color='red', linestyle='--', linewidth=2, label=f'MAE = {metrics["mae"]:.0f}€')
     ax3.set_xlabel('Index des Points')
     ax3.set_ylabel('Erreur Absolue (€)')
-    ax3.set_title('📈 Erreurs par Point de Données')
+    ax3.set_title(' Erreurs par Point de Données')
     ax3.legend()
     ax3.grid(True, alpha=0.3)
     
@@ -355,27 +355,28 @@ def create_precision_plots(metrics, actual_prices, predictions):
         quality = "FAIBLE"
     
     metrics_text = f"""
-📋 RÉSUMÉ DES MÉTRIQUES
+ RÉSUMÉ DES MÉTRIQUES
 
-🎯 Erreurs:
+ Erreurs:
    MAE:  {metrics['mae']:.0f} €
    RMSE: {metrics['rmse']:.0f} €
    MAPE: {metrics['mape']:.1f} %
 
-📊 Qualité:
+ Qualité:
    R²:           {metrics['r_squared']:.4f}
    Corrélation:  {metrics['correlation']:.4f}
 
-✅ Précision:
+ Précision:
    ±500€:  {metrics['within_500']:.0f}%
    ±1000€: {metrics['within_1000']:.0f}%
    ±1500€: {metrics['within_1500']:.0f}%
 
-🏆 Évaluation: {quality}
+ Évaluation: {quality}
 """
     ax4.text(0.1, 0.9, metrics_text, fontsize=12, verticalalignment='top',
             bbox=dict(boxstyle='round,pad=1', facecolor='lightcyan', alpha=0.8))
     
+    #plt.show()
     plt.tight_layout()
     plt.savefig('../graphs/precision_summary.png', dpi=300, bbox_inches='tight')
     plt.close()
