@@ -19,3 +19,4 @@ def update_constants(theta: np.ndarray, mean_km: float, std_km: float, mean_pric
         f.write(f'STD_KM = "{std_km}"\n')
         f.write(f'MEAN_PRICE = "{mean_price}"\n')
         f.write(f'STD_PRICE = "{std_price}"\n')
+        f.write("DATA_FILE = \"../data/data.csv\"\n")

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Complete demonstration script for ft_linear_regression project.
+Complete demonstration script for ft_linear_regression project (Refactored Version).
 This script demonstrates all the required functionalities:
 1. Plotting the data distribution
 2. Plotting the linear regression line
@@ -14,18 +14,26 @@ import numpy as np
 from utils.load_csv import load_csv
 from const import THETA0, THETA1, MEAN_KM, STD_KM, MEAN_PRICE, STD_PRICE
 
-def demonstrate_complete_pipeline():
+# Convert string constants to float if needed
+THETA0 = float(THETA0) if isinstance(THETA0, str) else THETA0
+THETA1 = float(THETA1) if isinstance(THETA1, str) else THETA1
+MEAN_KM = float(MEAN_KM) if isinstance(MEAN_KM, str) else MEAN_KM
+STD_KM = float(STD_KM) if isinstance(STD_KM, str) else STD_KM
+MEAN_PRICE = float(MEAN_PRICE) if isinstance(MEAN_PRICE, str) else MEAN_PRICE
+STD_PRICE = float(STD_PRICE) if isinstance(STD_PRICE, str) else STD_PRICE
+
+
+def load_and_prepare_data():
     """
-    Complete demonstration of the linear regression project.
-    """
-    print("🚀 DÉMONSTRATION COMPLÈTE DU PROJET ft_linear_regression")
-    print("=" * 65)
+    Load and prepare data for analysis.
     
-    # Load data
+    Returns:
+        tuple: (mileage, actual_prices, predictions) or None if error
+    """
     data = load_csv("../data/data.csv")
     if data is None or len(data) == 0:
         print("❌ Erreur: Impossible de charger les données")
-        return
+        return None
     
     mileage = data['km'].values
     actual_prices = data['price'].values
@@ -34,13 +42,7 @@ def demonstrate_complete_pipeline():
     print(f"   Kilométrage: {np.min(mileage):.0f} - {np.max(mileage):.0f} km")
     print(f"   Prix: {np.min(actual_prices):.0f} - {np.max(actual_prices):.0f} €")
     
-    # ========================================================================
-    # 1. PLOTTING THE DATA DISTRIBUTION
-    # ========================================================================
-    print("\n📈 1. VISUALISATION DE LA RÉPARTITION DES DONNÉES")
-    print("-" * 50)
-    
-    # Calculate predictions for plotting
+    # Calculate predictions
     predictions = []
     for km in mileage:
         km_normalized = (km - MEAN_KM) / STD_KM
@@ -48,6 +50,23 @@ def demonstrate_complete_pipeline():
         pred_price = price_normalized * STD_PRICE + MEAN_PRICE
         predictions.append(pred_price)
     predictions = np.array(predictions)
+    
+    return mileage, actual_prices, predictions
+
+
+def plot_data_distribution(mileage, actual_prices):
+    """
+    Create visualization for data distribution.
+    
+    Args:
+        mileage: Array of mileage values
+        actual_prices: Array of actual price values
+        
+    Returns:
+        matplotlib.figure.Figure: The created figure
+    """
+    print("\n📈 1. VISUALISATION DE LA RÉPARTITION DES DONNÉES")
+    print("-" * 50)
     
     # Create comprehensive data visualization
     fig = plt.figure(figsize=(16, 12))
@@ -72,8 +91,9 @@ def demonstrate_complete_pipeline():
     
     # Mileage distribution
     ax2 = plt.subplot(2, 3, 2)
-    n, bins, patches = plt.hist(mileage, bins=12, color='skyblue', alpha=0.7, edgecolor='navy')
-    plt.axvline(np.mean(mileage), color='red', linestyle='--', linewidth=2, label=f'Moyenne: {np.mean(mileage):.0f}')
+    plt.hist(mileage, bins=12, color='skyblue', alpha=0.7, edgecolor='navy')
+    plt.axvline(np.mean(mileage), color='red', linestyle='--', linewidth=2, 
+                label=f'Moyenne: {np.mean(mileage):.0f}')
     plt.xlabel('Kilométrage (km)', fontsize=11)
     plt.ylabel('Fréquence', fontsize=11)
     plt.title('📊 Distribution du Kilométrage', fontsize=12, fontweight='bold')
@@ -83,7 +103,8 @@ def demonstrate_complete_pipeline():
     # Price distribution
     ax3 = plt.subplot(2, 3, 3)
     plt.hist(actual_prices, bins=12, color='lightcoral', alpha=0.7, edgecolor='darkred')
-    plt.axvline(np.mean(actual_prices), color='blue', linestyle='--', linewidth=2, label=f'Moyenne: {np.mean(actual_prices):.0f}€')
+    plt.axvline(np.mean(actual_prices), color='blue', linestyle='--', linewidth=2, 
+                label=f'Moyenne: {np.mean(actual_prices):.0f}€')
     plt.xlabel('Prix (€)', fontsize=11)
     plt.ylabel('Fréquence', fontsize=11)
     plt.title('💰 Distribution des Prix', fontsize=12, fontweight='bold')
@@ -91,10 +112,19 @@ def demonstrate_complete_pipeline():
     plt.grid(True, alpha=0.3)
     
     print("   ✅ Graphique de répartition des données créé")
+    return fig
+
+
+def add_regression_plot(fig, mileage, actual_prices, predictions):
+    """
+    Add regression line visualization to existing figure.
     
-    # ========================================================================
-    # 2. PLOTTING THE LINEAR REGRESSION LINE
-    # ========================================================================
+    Args:
+        fig: Matplotlib figure object
+        mileage: Array of mileage values
+        actual_prices: Array of actual price values
+        predictions: Array of predicted price values
+    """
     print("\n🎯 2. VISUALISATION DE LA LIGNE DE RÉGRESSION LINÉAIRE")
     print("-" * 55)
     
@@ -155,13 +185,20 @@ def demonstrate_complete_pipeline():
     
     print("   ✅ Graphique de régression linéaire créé")
     print("   📁 Sauvegardé: ../graphs/complete_demonstration.png")
+
+
+def calculate_precision_metrics(actual_prices, predictions, mileage):
+    """
+    Calculate comprehensive precision metrics.
     
-    # ========================================================================
-    # 3. CALCULATING ALGORITHM PRECISION
-    # ========================================================================
-    print("\n🔬 3. CALCUL DE LA PRÉCISION DE L'ALGORITHME")
-    print("-" * 45)
-    
+    Args:
+        actual_prices: Array of actual price values
+        predictions: Array of predicted price values
+        mileage: Array of mileage values
+        
+    Returns:
+        dict: Dictionary containing all precision metrics
+    """
     # Calculate comprehensive precision metrics
     errors = actual_prices - predictions
     abs_errors = np.abs(errors)
@@ -185,50 +222,91 @@ def demonstrate_complete_pipeline():
     within_1000 = np.sum(abs_errors <= 1000) / len(errors) * 100
     within_1500 = np.sum(abs_errors <= 1500) / len(errors) * 100
     
-    print(f"\n📊 RÉSULTATS DE PRÉCISION:")
-    print(f"   • Mean Absolute Error (MAE):     {mae:.2f} €")
-    print(f"   • Root Mean Squared Error:       {rmse:.2f} €")
-    print(f"   • Mean Absolute Percentage:      {mape:.2f} %")
-    print(f"   • Coefficient R²:                {r_squared:.4f} ({r_squared*100:.1f}%)")
-    print(f"   • Corrélation:                   {correlation:.4f}")
-    
-    print(f"\n🎯 PRÉCISION PAR SEUILS:")
-    print(f"   • Prédictions à ±500€:           {within_500:.1f}% ({int(within_500*len(errors)/100)}/{len(errors)})")
-    print(f"   • Prédictions à ±1000€:          {within_1000:.1f}% ({int(within_1000*len(errors)/100)}/{len(errors)})")
-    print(f"   • Prédictions à ±1500€:          {within_1500:.1f}% ({int(within_1500*len(errors)/100)}/{len(errors)})")
-    
-    # Quality assessment
-    print(f"\n📋 ÉVALUATION DE LA QUALITÉ:")
-    if r_squared >= 0.8:
-        quality = "🟢 EXCELLENTE"
-    elif r_squared >= 0.6:
-        quality = "🟡 BONNE"
-    elif r_squared >= 0.4:
-        quality = "🟠 MODÉRÉE"
-    else:
-        quality = "🔴 FAIBLE"
-    
-    print(f"   • Qualité globale du modèle:     {quality} (R² = {r_squared:.3f})")
-    
-    if mape <= 10:
-        error_assessment = "🟢 EXCELLENTE"
-    elif mape <= 20:
-        error_assessment = "🟡 ACCEPTABLE"
-    else:
-        error_assessment = "🔴 ÉLEVÉE"
-    
-    print(f"   • Erreur pourcentage moyenne:    {error_assessment} ({mape:.1f}%)")
-    
     # Best and worst predictions
     best_idx = np.argmin(abs_errors)
     worst_idx = np.argmax(abs_errors)
     
+    return {
+        'mae': mae,
+        'mse': mse,
+        'rmse': rmse,
+        'mape': mape,
+        'r_squared': r_squared,
+        'correlation': correlation,
+        'within_500': within_500,
+        'within_1000': within_1000,
+        'within_1500': within_1500,
+        'best_idx': best_idx,
+        'worst_idx': worst_idx,
+        'errors': errors,
+        'abs_errors': abs_errors
+    }
+
+
+def print_precision_results(metrics, mileage, actual_prices, predictions):
+    """
+    Print detailed precision analysis results.
+    
+    Args:
+        metrics: Dictionary of calculated metrics
+        mileage: Array of mileage values
+        actual_prices: Array of actual price values
+        predictions: Array of predicted price values
+    """
+    print("\n🔬 3. CALCUL DE LA PRÉCISION DE L'ALGORITHME")
+    print("-" * 45)
+    
+    print(f"\n📊 RÉSULTATS DE PRÉCISION:")
+    print(f"   • Mean Absolute Error (MAE):     {metrics['mae']:.2f} €")
+    print(f"   • Root Mean Squared Error:       {metrics['rmse']:.2f} €")
+    print(f"   • Mean Absolute Percentage:      {metrics['mape']:.2f} %")
+    print(f"   • Coefficient R²:                {metrics['r_squared']:.4f} ({metrics['r_squared']*100:.1f}%)")
+    print(f"   • Corrélation:                   {metrics['correlation']:.4f}")
+    
+    print(f"\n🎯 PRÉCISION PAR SEUILS:")
+    print(f"   • Prédictions à ±500€:           {metrics['within_500']:.1f}% ({int(metrics['within_500']*len(metrics['errors'])/100)}/{len(metrics['errors'])})")
+    print(f"   • Prédictions à ±1000€:          {metrics['within_1000']:.1f}% ({int(metrics['within_1000']*len(metrics['errors'])/100)}/{len(metrics['errors'])})")
+    print(f"   • Prédictions à ±1500€:          {metrics['within_1500']:.1f}% ({int(metrics['within_1500']*len(metrics['errors'])/100)}/{len(metrics['errors'])})")
+    
+    # Quality assessment
+    print(f"\n📋 ÉVALUATION DE LA QUALITÉ:")
+    if metrics['r_squared'] >= 0.8:
+        quality = "🟢 EXCELLENTE"
+    elif metrics['r_squared'] >= 0.6:
+        quality = "🟡 BONNE"
+    elif metrics['r_squared'] >= 0.4:
+        quality = "🟠 MODÉRÉE"
+    else:
+        quality = "🔴 FAIBLE"
+    
+    print(f"   • Qualité globale du modèle:     {quality} (R² = {metrics['r_squared']:.3f})")
+    
+    if metrics['mape'] <= 10:
+        error_assessment = "🟢 EXCELLENTE"
+    elif metrics['mape'] <= 20:
+        error_assessment = "🟡 ACCEPTABLE"
+    else:
+        error_assessment = "🔴 ÉLEVÉE"
+    
+    print(f"   • Erreur pourcentage moyenne:    {error_assessment} ({metrics['mape']:.1f}%)")
+    
+    # Best and worst predictions
     print(f"\n🏆 MEILLEURE PRÉDICTION:")
-    print(f"   Point #{best_idx+1}: {mileage[best_idx]:.0f}km → {actual_prices[best_idx]:.0f}€ (prédit: {predictions[best_idx]:.0f}€, erreur: {abs_errors[best_idx]:.0f}€)")
+    print(f"   Point #{metrics['best_idx']+1}: {mileage[metrics['best_idx']]:.0f}km → {actual_prices[metrics['best_idx']]:.0f}€ (prédit: {predictions[metrics['best_idx']]:.0f}€, erreur: {metrics['abs_errors'][metrics['best_idx']]:.0f}€)")
     
     print(f"\n⚠️  PIRE PRÉDICTION:")
-    print(f"   Point #{worst_idx+1}: {mileage[worst_idx]:.0f}km → {actual_prices[worst_idx]:.0f}€ (prédit: {predictions[worst_idx]:.0f}€, erreur: {abs_errors[worst_idx]:.0f}€)")
+    print(f"   Point #{metrics['worst_idx']+1}: {mileage[metrics['worst_idx']]:.0f}km → {actual_prices[metrics['worst_idx']]:.0f}€ (prédit: {predictions[metrics['worst_idx']]:.0f}€, erreur: {metrics['abs_errors'][metrics['worst_idx']]:.0f}€)")
+
+
+def create_precision_plots(metrics, actual_prices, predictions):
+    """
+    Create precision analysis plots.
     
+    Args:
+        metrics: Dictionary of calculated metrics
+        actual_prices: Array of actual price values
+        predictions: Array of predicted price values
+    """
     # Create precision summary plot
     fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(14, 10))
     
@@ -239,23 +317,24 @@ def demonstrate_complete_pipeline():
     ax1.plot([min_price, max_price], [min_price, max_price], 'r--', linewidth=2, label='Prédiction parfaite')
     ax1.set_xlabel('Prix Réel (€)')
     ax1.set_ylabel('Prix Prédit (€)')
-    ax1.set_title(f'🎯 Prédictions vs Réalité\nR² = {r_squared:.4f}')
+    ax1.set_title(f'🎯 Prédictions vs Réalité\nR² = {metrics["r_squared"]:.4f}')
     ax1.legend()
     ax1.grid(True, alpha=0.3)
     
     # Error distribution
-    ax2.hist(errors, bins=12, alpha=0.7, color='orange', edgecolor='darkorange')
+    ax2.hist(metrics['errors'], bins=12, alpha=0.7, color='orange', edgecolor='darkorange')
     ax2.axvline(0, color='red', linestyle='--', linewidth=2, label='Erreur nulle')
-    ax2.axvline(np.mean(errors), color='blue', linestyle='--', linewidth=2, label=f'Erreur moyenne: {np.mean(errors):.0f}€')
+    ax2.axvline(np.mean(metrics['errors']), color='blue', linestyle='--', linewidth=2, 
+                label=f'Erreur moyenne: {np.mean(metrics["errors"]):.0f}€')
     ax2.set_xlabel('Erreur (€)')
     ax2.set_ylabel('Fréquence')
-    ax2.set_title(f'📊 Distribution des Erreurs\nMAE = {mae:.0f}€')
+    ax2.set_title(f'📊 Distribution des Erreurs\nMAE = {metrics["mae"]:.0f}€')
     ax2.legend()
     ax2.grid(True, alpha=0.3)
     
     # Absolute errors by data point
-    ax3.bar(range(len(abs_errors)), abs_errors, alpha=0.7, color='purple')
-    ax3.axhline(mae, color='red', linestyle='--', linewidth=2, label=f'MAE = {mae:.0f}€')
+    ax3.bar(range(len(metrics['abs_errors'])), metrics['abs_errors'], alpha=0.7, color='purple')
+    ax3.axhline(metrics['mae'], color='red', linestyle='--', linewidth=2, label=f'MAE = {metrics["mae"]:.0f}€')
     ax3.set_xlabel('Index des Points')
     ax3.set_ylabel('Erreur Absolue (€)')
     ax3.set_title('📈 Erreurs par Point de Données')
@@ -264,24 +343,35 @@ def demonstrate_complete_pipeline():
     
     # Precision metrics summary
     ax4.axis('off')
+    
+    # Quality assessment for summary
+    if metrics['r_squared'] >= 0.8:
+        quality = "EXCELLENTE"
+    elif metrics['r_squared'] >= 0.6:
+        quality = "BONNE"
+    elif metrics['r_squared'] >= 0.4:
+        quality = "MODÉRÉE"
+    else:
+        quality = "FAIBLE"
+    
     metrics_text = f"""
 📋 RÉSUMÉ DES MÉTRIQUES
 
 🎯 Erreurs:
-   MAE:  {mae:.0f} €
-   RMSE: {rmse:.0f} €
-   MAPE: {mape:.1f} %
+   MAE:  {metrics['mae']:.0f} €
+   RMSE: {metrics['rmse']:.0f} €
+   MAPE: {metrics['mape']:.1f} %
 
 📊 Qualité:
-   R²:           {r_squared:.4f}
-   Corrélation:  {correlation:.4f}
+   R²:           {metrics['r_squared']:.4f}
+   Corrélation:  {metrics['correlation']:.4f}
 
 ✅ Précision:
-   ±500€:  {within_500:.0f}%
-   ±1000€: {within_1000:.0f}%
-   ±1500€: {within_1500:.0f}%
+   ±500€:  {metrics['within_500']:.0f}%
+   ±1000€: {metrics['within_1000']:.0f}%
+   ±1500€: {metrics['within_1500']:.0f}%
 
-🏆 Évaluation: {quality.split()[-1]}
+🏆 Évaluation: {quality}
 """
     ax4.text(0.1, 0.9, metrics_text, fontsize=12, verticalalignment='top',
             bbox=dict(boxstyle='round,pad=1', facecolor='lightcyan', alpha=0.8))
@@ -292,10 +382,42 @@ def demonstrate_complete_pipeline():
     
     print(f"\n✅ Analyse de précision terminée")
     print(f"📁 Graphique sauvegardé: ../graphs/precision_summary.png")
+
+
+def demonstrate_complete_pipeline():
+    """
+    Complete demonstration of the linear regression project (Refactored).
+    """
+    print("🚀 DÉMONSTRATION COMPLÈTE DU PROJET ft_linear_regression")
+    print("=" * 65)
     
-    # ========================================================================
-    # FINAL SUMMARY
-    # ========================================================================
+    # 1. Load and prepare data
+    data_result = load_and_prepare_data()
+    if data_result is None:
+        return
+    
+    mileage, actual_prices, predictions = data_result
+    
+    # 2. Plot data distribution
+    fig = plot_data_distribution(mileage, actual_prices)
+    
+    # 3. Add regression line to the plot
+    add_regression_plot(fig, mileage, actual_prices, predictions)
+    
+    # 4. Calculate precision metrics
+    metrics = calculate_precision_metrics(actual_prices, predictions, mileage)
+    
+    # 5. Print precision results
+    print_precision_results(metrics, mileage, actual_prices, predictions)
+    
+    # 6. Create precision plots
+    create_precision_plots(metrics, actual_prices, predictions)
+    
+    # Final summary
+    quality = "🟢 EXCELLENTE" if metrics['r_squared'] >= 0.8 else \
+             "🟡 BONNE" if metrics['r_squared'] >= 0.6 else \
+             "🟠 MODÉRÉE" if metrics['r_squared'] >= 0.4 else "🔴 FAIBLE"
+    
     print(f"\n🎉 DÉMONSTRATION COMPLÈTE TERMINÉE")
     print("=" * 65)
     print(f"✅ 1. Répartition des données visualisée")
@@ -304,8 +426,9 @@ def demonstrate_complete_pipeline():
     print(f"\n📁 Graphiques générés:")
     print(f"   • ../graphs/complete_demonstration.png")
     print(f"   • ../graphs/precision_summary.png")
-    print(f"\n🏆 Qualité du modèle: {quality} (R² = {r_squared:.3f})")
-    print(f"🎯 Erreur moyenne: {mae:.0f}€ ({mape:.1f}%)")
+    print(f"\n🏆 Qualité du modèle: {quality} (R² = {metrics['r_squared']:.3f})")
+    print(f"🎯 Erreur moyenne: {metrics['mae']:.0f}€ ({metrics['mape']:.1f}%)")
+
 
 if __name__ == "__main__":
     demonstrate_complete_pipeline()
