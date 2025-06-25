@@ -13,7 +13,6 @@ help:
 	@echo "  demo       - Complete demonstration (data + regression + precision)"
 	@echo "  estimate   - Interactive price estimation (run 'make estimate KM=<value>')"
 	@echo "  clean      - Clean generated files"
-	@echo "  all        - Train model and generate all visualizations"
 	@echo ""
 	@echo "Examples:"
 	@echo "  make train"

@@ -7,20 +7,21 @@ A linear regression implementation from scratch to predict car prices based on m
 ```
 ft_linear_regression/
 ├── data/
-│   └── data.csv                 # Training data (mileage vs price)
-├── graphs/                      # Generated visualization plots
-│   ├── regression_plot.png      # Main regression visualization
-│   ├── cost_function.png        # Cost function evolution
-│   ├── residuals_analysis.png   # Residual analysis plots
-│   └── comparison_plot.png      # Original vs normalized data
-└── src/
-    ├── const.py                 # Learned parameters and normalization stats
-    ├── estimatePrice.py         # Price estimation script
-    ├── graf.py                  # Visualization functions
-    ├── linear_regression.py     # Core regression implementation
-    ├── loode_csv.py            # CSV loading utility
-    ├── train.py                # Model training script
-    └── test.py                 # Model testing script
+│   └── data.csv                    # Training data (mileage vs price)
+├── graphs/                         # Generated visualization plots
+│   ├── complete_demonstration.png  # Complete demo visualization
+│   └── precision_summary.png       # Precision analysis summary
+├── src/
+│   ├── const.py                    # Learned parameters and normalization stats
+│   ├── demo.py                     # Complete demonstration script
+│   ├── estimatePrice.py            # Price estimation script
+│   ├── linear_regression.py        # Core regression implementation
+│   └── utils/
+│       ├── load_csv.py             # CSV loading utility
+│       └── update_constants.py     # Constants update utility
+├── Makefile                        # Build automation
+├── README.md                       # Project documentation
+└── requirements.txt                # Python dependencies
 ```
 
 ## Features
@@ -44,7 +45,6 @@ ft_linear_regression/
 Run the complete demonstration to see all features:
 
 ```bash
-cd /path/to/ft_linear_regression
 make demo
 ```
 
@@ -55,117 +55,56 @@ This will:
 
 ## Usage
 
-### 1. Train the Model
+### 1. Complete Demonstration
 
-Train the linear regression model and save parameters:
+Run the complete demonstration to see all features:
 
 ```bash
-cd src
-python train.py
+make demo
 ```
 
 This will:
-- Load data from `../data/data.csv`
-- Train the model using gradient descent
-- Save learned parameters to `const.py`
-- Display training metrics
+- Load data from `data/data.csv`
+- Perform linear regression training
+- Display data visualization
+- Calculate precision metrics
+- Generate demonstration plots
 
 ### 2. Estimate Car Prices
 
 Use the trained model to estimate prices:
 
 ```bash
-cd src
-python estimatePrice.py <mileage_in_km>
+make estimate KM=<mileage_in_km>
 ```
 
 Example:
 ```bash
-python estimatePrice.py 50000
+make estimate KM=50000
 # Output: Estimated price for 50000.0 km: 7427.10
 ```
 
-### 3. Test the Model
-
-Run comprehensive tests on the trained model:
-
+Or run directly:
 ```bash
 cd src
-python test.py
+python estimatePrice.py <mileage_in_km>
 ```
 
-This will:
-- Test with sample mileage values
-- Compare predictions with actual training data
-- Show average prediction error
-- Offer interactive testing mode
+### 3. Run Core Linear Regression
 
-### 4. Plot Data Distribution and Regression Line
-
-Show data repartition and the linear regression result:
-
-```bash
-cd src
-python plot_data.py
-```
-
-This generates:
-- `data_distribution.png`: Data distribution analysis with histograms
-- `regression_result.png`: Data points with the linear regression line
-
-### 5. Calculate Algorithm Precision
-
-Calculate comprehensive precision metrics:
-
-```bash
-cd src
-python precision.py
-```
-
-This provides:
-- Mean Absolute Error (MAE)
-- Root Mean Squared Error (RMSE) 
-- Mean Absolute Percentage Error (MAPE)
-- R-squared coefficient
-- Precision by error thresholds
-- Detailed error analysis
-
-### 6. Complete Demonstration
-
-Run the complete pipeline demonstrating all requirements:
-
-```bash
-cd src
-python demo.py
-```
-
-This combines:
-1. **Data repartition plotting**
-2. **Linear regression line visualization** 
-3. **Algorithm precision calculation**
-
-### 7. Generate All Visualizations
-
-Create all visualization plots:
-
-```bash
-cd src
-python graf.py
-```
-
-This generates:
-- `regression_plot.png`: Main scatter plot with regression line
-- `cost_function.png`: Cost function evolution during training
-- `residuals_analysis.png`: Residual analysis plots
-- `comparison_plot.png`: Original vs normalized data comparison
-
-### 8. Run Core Functions
-
-You can also run the core linear regression implementation directly:
+You can run the core linear regression implementation directly:
 
 ```bash
 cd src
 python linear_regression.py
+```
+
+### 4. Clean Generated Files
+
+Remove generated files and cache:
+
+```bash
+make clean
 ```
 
 ## Makefile Commands
@@ -177,18 +116,13 @@ For easier project management, use the Makefile:
 make demo
 
 # Individual components
-make train          # Train the model
-make plot           # Plot data distribution and regression line
-make precision      # Calculate algorithm precision
-make visualize      # Generate all visualization plots
-make test           # Test the model
+make train              # Train the linear regression model
 make estimate KM=50000  # Estimate price for specific mileage
 
 # Project management
-make install        # Install dependencies
-make clean          # Clean generated files
-make all            # Train + plot + precision + visualize
-make help           # Show all available commands
+make install            # Install dependencies
+make clean              # Clean generated files
+make help               # Show all available commands
 ```
 
 ## Project Requirements Fulfilled
@@ -196,38 +130,34 @@ make help           # Show all available commands
 This project fulfills all the specified requirements:
 
 ### ✅ 1. Plotting the data into a graph to see their repartition
-- **File**: `src/plot_data.py` and `src/demo.py`
-- **Command**: `make plot` or `make demo`
+- **File**: `src/demo.py`
+- **Command**: `make demo`
 - **Output**: Data distribution plots showing:
   - Scatter plot with color-coded prices
-  - Mileage histogram with mean indicator
-  - Price histogram with mean indicator  
-  - Box plots for outlier detection
-- **Graphs**: `data_distribution.png`, `complete_demonstration.png`
+  - Data point distribution analysis
+  - Statistical information display
+- **Graphs**: `complete_demonstration.png`
 
 ### ✅ 2. Plotting the line resulting from linear regression
-- **File**: `src/plot_data.py` and `src/demo.py` 
-- **Command**: `make plot` or `make demo`
+- **File**: `src/demo.py` 
+- **Command**: `make demo`
 - **Output**: Regression visualization showing:
-  - Original data points (blue)
-  - Linear regression line (red)
-  - Individual predictions (orange)
+  - Original data points
+  - Linear regression line
   - Model equation and parameters
-  - Correlation coefficient
-- **Graphs**: `regression_result.png`, `complete_demonstration.png`
+  - Correlation information
+- **Graphs**: `complete_demonstration.png`
 
 ### ✅ 3. A program that calculates the precision of your algorithm
-- **File**: `src/precision.py` and `src/demo.py`
-- **Command**: `make precision` or `make demo`
+- **File**: `src/demo.py`
+- **Command**: `make demo`
 - **Output**: Comprehensive precision metrics:
-  - Mean Absolute Error (MAE): 558€
-  - Root Mean Squared Error (RMSE): 668€
-  - Mean Absolute Percentage Error (MAPE): 9.6%
-  - R-squared coefficient: 0.733 (73.3%)
-  - Precision by thresholds (±500€, ±1000€, ±1500€)
-  - Best/worst predictions analysis
+  - Mean Absolute Error (MAE)
+  - Root Mean Squared Error (RMSE)
+  - Mean Absolute Percentage Error (MAPE)
+  - R-squared coefficient
   - Quality assessment
-- **Graphs**: `precision_analysis.png`, `precision_summary.png`
+- **Graphs**: `precision_summary.png`
 
 ## Model Details
 
@@ -285,34 +215,36 @@ The current model achieves:
 
 Install dependencies:
 ```bash
-pip install numpy pandas matplotlib
+make install
+```
+
+Or manually:
+```bash
+pip install -r requirements.txt
 ```
 
 ## Files Description
 
 ### Core Files
 - **`demo.py`**: Complete demonstration script (all requirements in one)
-- **`plot_data.py`**: Data distribution and regression line visualization
-- **`precision.py`**: Algorithm precision calculation and analysis
-- **`train.py`**: Main training script with comprehensive metrics
 - **`estimatePrice.py`**: Command-line price estimation tool
 - **`linear_regression.py`**: Core gradient descent implementation
 - **`const.py`**: Stores learned parameters and normalization statistics
 
 ### Utility Files
-- **`loode_csv.py`**: CSV file loading utility
-- **`graf.py`**: Comprehensive visualization functions
-- **`test.py`**: Model testing and validation
+- **`utils/load_csv.py`**: CSV file loading utility
+- **`utils/update_constants.py`**: Constants update utility
 
 ### Data Files
-- **`data/data.csv`**: Training dataset (24 data points)
+- **`data/data.csv`**: Training dataset
 - **`graphs/*.png`**: Generated visualization plots:
   - `complete_demonstration.png`: Main demo output
-  - `data_distribution.png`: Data repartition analysis
-  - `regression_result.png`: Regression line visualization
   - `precision_summary.png`: Precision metrics summary
-  - `precision_analysis.png`: Detailed precision analysis
-  - Plus additional visualization plots
+
+### Configuration Files
+- **`Makefile`**: Build automation and project commands
+- **`requirements.txt`**: Python dependencies
+- **`README.md`**: Project documentation
 
 ## Example Output
 
@@ -328,10 +260,17 @@ $ make demo
 🎯 Erreur moyenne: 558€ (9.6%)
 ```
 
-### Training Output
-
+### Price Estimation
 ```bash
-$ python train.py
+$ make estimate KM=100000
+Estimating price for 100000 km...
+Estimated price for 100000.0 km: 6354.70
+```
+
+### Training Output
+```bash
+$ make train
+Training linear regression model...
 === Training Linear Regression Model ===
 Loaded 24 data points
 Data statistics:
@@ -346,9 +285,6 @@ Training Results:
   R-squared: 0.7330
 
 ✅ Training completed successfully!
-
-$ python estimatePrice.py 100000
-Estimated price for 100000.0 km: 6354.70
 ```
 
 ## Contributing
