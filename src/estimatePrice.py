@@ -16,7 +16,7 @@ def estimate_price(km: float) -> float:
     :param km: Mileage in kilometers
     :return: Estimated price
     """
-    if km < 0:
+    if km < 0 or not isinstance(km, (int, float)) :
         raise ValueError("Kilometers cannot be negative.")
     
     km_normalized = (km - MEAN_KM) / STD_KM
